@@ -4,8 +4,14 @@ import { doc, getDoc } from "firebase/firestore";
 import { toast } from "react-toastify";
 
 import NavLog from "./NavLog";
+import FileUpload from "./FileComponents/Upload";
+import AddFolder from "./FileComponents/AddFolder";
+import FolderList from "./FileComponents/FolderList";
+
 function Accueil() {
   const [userDetails, setUserDetails] = useState(null);
+  const [rerender, setRerender] = useState(false);
+
   const fetchUserData = async () => {
     auth.onAuthStateChanged(async (user) => {
       console.log(user);
@@ -32,9 +38,17 @@ function Accueil() {
       console.error("Error logging out:", error.message);
     }
   }
+  const handleRerender = () => {
+    setRerender(!rerender);
+  };
+  const currentUser = auth.currentUser;
+
   return (
     <>
       <NavLog />
+      <AddFolder Rerender={handleRerender} currentPath={"/"} />
+      <FolderList />
+      <FileUpload />
       <div className="max-w-md mx-auto mt-8 p-6 bg-transparent rounded-lg border-2 border-indigo-500">
         {userDetails ? (
           <>
