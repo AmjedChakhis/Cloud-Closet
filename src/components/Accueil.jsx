@@ -46,9 +46,8 @@ function Accueil() {
   return (
     <>
       <NavLog />
-      <AddFolder Rerender={handleRerender} currentPath={"/"} />
-      <FolderList />
-      <FileUpload />
+      <AddFolder Rerender={handleRerender} currentPath={currentUser.uid} />
+      <FolderList currentPath={currentUser.uid} />
       <div className="max-w-md mx-auto mt-8 p-6 bg-transparent rounded-lg border-2 border-indigo-500">
         {userDetails ? (
           <>

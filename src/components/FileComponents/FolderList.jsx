@@ -1,50 +1,70 @@
+// components/FolderList.js
+
 import React, { useEffect, useState } from "react";
 import { getAuth } from "firebase/auth";
 import { getStorage, ref, listAll } from "firebase/storage";
+import FolderItem from "./FolderItem";
 
-const FolderList = ({ currentPath }) => {
+const FolderList = ({ currentPath, level = 0 }) => {
   const auth = getAuth();
   const storage = getStorage();
-  const [folders, setFolders] = useState([]);
+  const [entries, setEntries] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const fetchEntries = async () => {
+    try {
+      const user = auth.currentUser;
+      if (!user) throw new Error("User not authenticated.");
+
+      const path = currentPath || "/";
+      const folderRef = ref(storage, `${path}`);
+      const folderList = await listAll(folderRef);
+
+      const folderNames = folderList.prefixes.map((folderRef) => ({
+        type: "folder",
+        name: folderRef.name.split("/").pop(),
+        path: folderRef.fullPath,
+      }));
+
+      const fileNames = folderList.items.map((fileRef) => ({
+        type: "file",
+        name: fileRef.name,
+        path: fileRef.fullPath,
+      }));
+
+      const combinedEntries = [...folderNames, ...fileNames];
+
+      setEntries(combinedEntries);
+    } catch (error) {
+      console.error("Error fetching entries:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchFolders = async () => {
-      try {
-        const user = auth.currentUser;
-        if (!user) throw new Error("User not authenticated.");
-
-        const path = currentPath || "/";
-        const folderRef = ref(storage, `${user.uid}${path}`);
-        const folderList = await listAll(folderRef);
-
-        // Extract folder names from the list
-        const folderNames = folderList.prefixes.map((folderRef) => ({
-          name: folderRef.name.split("/").pop(),
-          path: folderRef.fullPath,
-        }));
-
-        setFolders(folderNames);
-      } catch (error) {
-        console.error("Error fetching folders:", error);
-      } finally {
-        setLoading(false); // Set loading state to false once fetching is done
-      }
-    };
-
-    fetchFolders();
+    fetchEntries();
   }, [currentPath]);
 
   if (loading) {
-    return <div>Loading...</div>; // Render loading state while fetching data
+    return <div>Loading...</div>;
   }
 
   return (
     <div>
-      <h2>Folders:</h2>
       <ul>
-        {folders.map((folder, index) => (
-          <li key={index}>{folder.name}</li>
+        {entries.map((entry, index) => (
+          <li key={index} className={`ml-${level * 4}`}>
+            {entry.type === "folder" ? (
+              <FolderItem
+                folder={entry}
+                onUpload={fetchEntries}
+                level={level}
+              />
+            ) : (
+              <div className="flex items-center">📄 {entry.name}</div>
+            )}
+          </li>
         ))}
       </ul>
     </div>

@@ -1,3 +1,5 @@
+// components/FileUpload.js
+
 import React, { useState } from "react";
 import {
   Button,
@@ -5,14 +7,13 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  TextField,
 } from "@mui/material";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileUpload } from "@fortawesome/free-solid-svg-icons";
-import { storage, auth } from "../firebase";
-import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { storage } from "../firebase";
 
-const FileUpload = ({ userId }) => {
+const FileUpload = ({ folderPath, onUpload }) => {
   const [open, setOpen] = useState(false);
   const [file, setFile] = useState(null);
   const [message, setMessage] = useState("");
@@ -24,48 +25,36 @@ const FileUpload = ({ userId }) => {
 
   const openDialog = () => setOpen(true);
   const closeDialog = () => setOpen(false);
-  const currentUser = auth.currentUser;
 
   const handleUpload = () => {
     if (file) {
-      const storageRef = ref(storage, `${currentUser.uid}/${file.name}`);
+      const storageRef = ref(storage, `${folderPath}/${file.name}`);
       const uploadTask = uploadBytesResumable(storageRef, file);
 
       uploadTask.on(
         "state_changed",
         (snapshot) => {
-          // Handle progress, pause, and resume states
           const progress =
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
           console.log("Upload is " + progress + "% done");
-          switch (snapshot.state) {
-            case "paused":
-              console.log("Upload is paused");
-              break;
-            case "running":
-              console.log("Upload is running");
-              break;
-          }
         },
         (error) => {
-          // Handle unsuccessful uploads
           console.error("Error uploading file:", error.message);
           setMessage(`Error uploading file: ${error.message}`);
         },
         async () => {
-          // Handle successful uploads on complete
           try {
             const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
             console.log("File available at", downloadURL);
             setMessage("File uploaded successfully.");
+            onUpload();
+            closeDialog();
           } catch (error) {
             console.error("Error getting download URL:", error.message);
             setMessage(`Error getting download URL: ${error.message}`);
           }
         }
       );
-      // Close the dialog after upload
-      closeDialog();
     } else {
       setMessage("Please select a file.");
     }
