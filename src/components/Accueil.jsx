@@ -11,22 +11,38 @@ import FolderList from "./FileComponents/FolderList";
 function Accueil() {
   const [userDetails, setUserDetails] = useState(null);
   const [rerender, setRerender] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  const fetchUserData = async () => {
-    auth.onAuthStateChanged(async (user) => {
-      console.log(user);
-      const docRef = doc(db, "Users", user.uid);
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        setUserDetails(docSnap.data());
-        console.log(docSnap.data());
+  const fetchUserData = async (user) => {
+    if (user) {
+      try {
+        const docRef = doc(db, "Users", user.uid);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          setUserDetails(docSnap.data());
+        } else {
+          console.log("No such document!");
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    } else {
+      console.log("User is not logged in");
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        fetchUserData(user);
       } else {
-        console.log("User is not logged in");
+        setLoading(false);
       }
     });
-  };
-  useEffect(() => {
-    fetchUserData();
+
+    // Cleanup subscription on unmount
+    return () => unsubscribe();
   }, []);
 
   async function handleLogout() {
@@ -38,16 +54,26 @@ function Accueil() {
       console.error("Error logging out:", error.message);
     }
   }
+
   const handleRerender = () => {
     setRerender(!rerender);
   };
+
   const currentUser = auth.currentUser;
+
+  if (loading) {
+    return <div className="text-lg text-center text-white">Loading...</div>;
+  }
 
   return (
     <>
       <NavLog />
-      <AddFolder Rerender={handleRerender} currentPath={currentUser.uid} />
-      <FolderList currentPath={currentUser.uid} />
+      {currentUser && (
+        <>
+          <AddFolder Rerender={handleRerender} currentPath={currentUser.uid} />
+          <FolderList currentPath={currentUser.uid} />
+        </>
+      )}
       <div className="max-w-md mx-auto mt-8 p-6 bg-transparent rounded-lg border-2 border-indigo-500">
         {userDetails ? (
           <>
@@ -55,7 +81,7 @@ function Accueil() {
               Welcome{" "}
               {userDetails.firstName
                 ? userDetails.firstName
-                : userDetails.email}{" "}
+                : userDetails.email}
             </h3>
             <div className="text-white">
               <p>Email: {userDetails.email}</p>
@@ -76,4 +102,5 @@ function Accueil() {
     </>
   );
 }
+
 export default Accueil;
