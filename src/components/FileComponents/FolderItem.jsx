@@ -19,6 +19,7 @@ import {
 } from "@mui/material";
 import { toast } from "react-toastify";
 import DownloadIcon from "./Download";
+import "./FolderItem.css"; // Import the CSS file
 
 const FolderItem = ({ folder, onUpload, level }) => {
   const [showContents, setShowContents] = useState(false);

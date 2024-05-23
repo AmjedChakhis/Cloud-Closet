@@ -12,6 +12,7 @@ import Accueil from "./components/Accueil";
 import { useState, useEffect } from "react";
 import { Navigate } from "react-router-dom";
 import NavLog from "./components/NavLog";
+import EditProfile from "./components/EditProfile";
 const App = () => {
   const [user, setUser] = useState();
   useEffect(() => {
@@ -30,6 +31,7 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/accueil" element={<Accueil />} />
+          <Route path="/edit-profile" element={<EditProfile />} />
         </Routes>
         <ToastContainer />
       </div>

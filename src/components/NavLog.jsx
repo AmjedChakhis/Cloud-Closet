@@ -7,17 +7,17 @@ import Button from "./Button";
 import MenuSvg from "../assets/svg/MenuSvg";
 import { HamburgerMenu } from "./design/Header";
 import { useState } from "react";
-import { auth} from "./firebase";
+import { auth } from "./firebase";
 const NavLog = () => {
-    async function handleLogout() {
-        try {
-          await auth.signOut();
-          window.location.href = "/login";
-          console.log("User logged out successfully!");
-        } catch (error) {
-          console.error("Error logging out:", error.message);
-        }
-      }
+  async function handleLogout() {
+    try {
+      await auth.signOut();
+      window.location.href = "/login";
+      console.log("User logged out successfully!");
+    } catch (error) {
+      console.error("Error logging out:", error.message);
+    }
+  }
 
   const pathname = useLocation();
   const [openNavigation, setOpenNavigation] = useState(false);
@@ -46,7 +46,7 @@ const NavLog = () => {
       }`}
     >
       <div className="flex items-center px-5 lg:px-7.5 xl:px-10 max-lg:py-4">
-      <Link className="block w-[15rem] mt-2 xl:mr-8" to="/">
+        <Link className="block w-[15rem] mt-2 xl:mr-8" to="/">
           <img src={logo} alt="CloudCloset" />
         </Link>
 
@@ -56,28 +56,30 @@ const NavLog = () => {
           } fixed top-[5rem] left-0 right-0 bottom-0 bg-n-8 lg:static lg:flex lg:mx-auto lg:bg-transparent`}
         >
           <div className="relative z-2 flex flex-col items-center justify-center m-auto lg:flex-row">
-            
-              <Link
-               
-                to="/login"
-                onClick={handleLogout}
-                className={`block relative font-code text-2xl uppercase text-n-1 transition-colors hover:text-color-1 
+            <Link
+              to="/edit-profile"
+              className="block relative font-code text-2xl uppercase text-n-1 transition-colors hover:text-color-1 px-6 py-6 md:py-8 lg:-mr-0.25 lg:text-xs lg:font-semibold  lg:leading-5 lg:hover:text-n-1 xl:px-12"
+            >
+              Edit Profile
+            </Link>
+            <Link
+              to="/login"
+              onClick={handleLogout}
+              className={`block relative font-code text-2xl uppercase text-n-1 transition-colors hover:text-color-1 
                   lg:hidden
                  px-6 py-6 md:py-8 lg:-mr-0.25 lg:text-xs lg:font-semibold  lg:leading-5 lg:hover:text-n-1 xl:px-12`}
-              >
-                Sign Out
-              </Link>
-           
+            >
+              Sign Out
+            </Link>
           </div>
 
           <HamburgerMenu />
         </nav>
 
-        
         <Link to="/login">
-        <Button className="hidden lg:flex mb-5" onClick={handleLogout}>
-          Sign out
-        </Button>
+          <Button className="hidden lg:flex mb-5" onClick={handleLogout}>
+            Sign out
+          </Button>
         </Link>
         <Button
           className="ml-auto lg:hidden"
