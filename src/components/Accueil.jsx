@@ -8,12 +8,14 @@ import FileUpload from "./FileComponents/Upload";
 import AddFolder from "./FileComponents/AddFolder";
 import FolderList from "./FileComponents/FolderList";
 import DragAndDrop from "./FileComponents/DragDrop";
-import UserWelcome from "./UserWelcome";
+import UserWelcome from "./FileComponents/UserWelcome";
+import "./Acceuil.css";
 
 function Accueil() {
   const [userDetails, setUserDetails] = useState(null);
   const [rerender, setRerender] = useState(false);
   const [loading, setLoading] = useState(true);
+  const currentUser = auth.currentUser;
 
   const fetchUserData = async (user) => {
     if (user) {
@@ -47,21 +49,9 @@ function Accueil() {
     return () => unsubscribe();
   }, []);
 
-  async function handleLogout() {
-    try {
-      await auth.signOut();
-      window.location.href = "/login";
-      console.log("User logged out successfully!");
-    } catch (error) {
-      console.error("Error logging out:", error.message);
-    }
-  }
-
   const handleRerender = () => {
     setRerender(!rerender);
   };
-
-  const currentUser = auth.currentUser;
 
   if (loading) {
     return <div className="text-lg text-center text-white">Loading...</div>;
@@ -70,18 +60,33 @@ function Accueil() {
   return (
     <>
       <NavLog />
-      <UserWelcome userDetails={userDetails} handleLogout={handleLogout} />
-      {currentUser && (
-        <>
-          <AddFolder Rerender={handleRerender} currentPath={currentUser.uid} />
-          <FolderList currentPath={currentUser.uid} />
-          <DragAndDrop
-            folderPath={currentUser.uid}
-            onUpload={handleRerender}
-            closeDialog={() => {}}
+      <div className="dashboard-grid">
+        <div className="user-welcome">
+          <UserWelcome
+            userDetails={userDetails}
+            userId={currentUser.uid}
+            shouldRerender={handleRerender}
           />
-        </>
-      )}
+        </div>
+        {currentUser && (
+          <>
+            <div className="folder-actions">
+              <AddFolder
+                Rerender={handleRerender}
+                currentPath={currentUser.uid}
+              />
+            </div>
+            <div className="folder-list">
+              <FolderList currentPath={currentUser.uid} />
+            </div>
+            <DragAndDrop
+              folderPath={currentUser.uid}
+              onUpload={handleRerender}
+              closeDialog={() => {}}
+            />
+          </>
+        )}
+      </div>
     </>
   );
 }

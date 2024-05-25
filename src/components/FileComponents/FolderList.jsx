@@ -1,7 +1,13 @@
 // components/FolderList.js
 import React, { useEffect, useState } from "react";
 import { getAuth } from "firebase/auth";
-import { getStorage, ref, listAll, deleteObject } from "firebase/storage";
+import {
+  getStorage,
+  ref,
+  listAll,
+  getDownloadURL,
+  deleteObject,
+} from "firebase/storage";
 import FolderItem from "./FolderItem";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
@@ -16,6 +22,7 @@ import { toast } from "react-toastify";
 import TypeIcon from "./FileMetadata/TypeIcon";
 import FileSize from "./FileMetadata/FileSize";
 import DownloadIcon from "./Download";
+import GetPublicURL from "./FileMetadata/GetPublicUrl"; // Import the new component
 
 const FolderList = ({ currentPath, level = 0 }) => {
   const auth = getAuth();
@@ -39,11 +46,17 @@ const FolderList = ({ currentPath, level = 0 }) => {
         path: folderRef.fullPath,
       }));
 
-      const fileNames = folderList.items.map((fileRef) => ({
-        type: "file",
-        name: fileRef.name,
-        path: fileRef.fullPath,
-      }));
+      const fileNames = await Promise.all(
+        folderList.items.map(async (fileRef) => {
+          const url = await getDownloadURL(fileRef);
+          return {
+            type: "file",
+            name: fileRef.name,
+            path: fileRef.fullPath,
+            url: url,
+          };
+        })
+      );
 
       const combinedEntries = [...folderNames, ...fileNames];
 
@@ -98,10 +111,17 @@ const FolderList = ({ currentPath, level = 0 }) => {
                 <TypeIcon
                   extension={entry.name.split(".").pop().toLowerCase()}
                 />
-                <span className="ml-2">{entry.name}</span>
+                <a
+                  href={entry.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="ml-2 text-blue-600"
+                >
+                  {entry.name}
+                </a>
                 <FileSize filePath={entry.path} />
                 <DownloadIcon entry={entry} />
-
+                <GetPublicURL filePath={entry.path} />
                 <FontAwesomeIcon
                   icon={faTrash}
                   className="cursor-pointer ml-2 text-red-600"

@@ -4,7 +4,7 @@ import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { toast } from "react-toastify";
 import NavLog from "./NavLog";
-import { Upload } from "react-feather";
+import { Upload, Edit2 } from "react-feather";
 
 function EditProfile() {
   const [userDetails, setUserDetails] = useState(null);
@@ -98,40 +98,40 @@ function EditProfile() {
     }
   }
 
+  const handleFileChange = (e) => {
+    setProfileImage(e.target.files[0]);
+    handleUploadProfilePicture();
+  };
+
   return (
     <div className="flex justify-center items-center h-screen">
       <div className="max-w-md mx-auto p-6 bg-transparent rounded-lg border-2 border-indigo-500">
         <NavLog />
         {userDetails ? (
           <>
-            <div className="flex flex-col items-center mb-4">
-              <img
-                src={
-                  userDetails.profilePicture || "default-profile-picture-url"
-                }
-                alt="Profile"
-                className="w-24 h-24 rounded-full mb-2"
-              />
-              <input
-                type="file"
-                accept="image/*"
-                onChange={(e) => setProfileImage(e.target.files[0])}
-                className="mb-2 opacity-0 absolute w-0 h-0 overflow-hidden"
-                id="file-upload"
-              />
-              <label
-                htmlFor="file-upload"
-                className="cursor-pointer w-full bg-transparent border-2 border-indigo-500 text-indigo-500 py-2 px-4 rounded hover:bg-indigo-500 hover:text-white mb-2 flex items-center justify-center"
-              >
-                <Upload className="mr-2" />
-                Choose File
-              </label>
-              <button
-                onClick={handleUploadProfilePicture}
-                className="w-full bg-transparent border-2 border-indigo-500 text-indigo-500 py-2 px-4 rounded hover:bg-indigo-500 hover:text-white mb-2"
-              >
-                Upload Profile Picture
-              </button>
+            <div className="flex flex-col items-center  relative">
+              <div className="relative">
+                <img
+                  src={
+                    userDetails.profilePicture || "default-profile-picture-url"
+                  }
+                  alt="Profile"
+                  className="w-24 h-24 rounded-full mb-2"
+                />
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileChange}
+                  className="hidden"
+                  id="file-upload"
+                />
+                <button
+                  onClick={() => document.getElementById("file-upload").click()}
+                  className="absolute top-0 right-0 bg-indigo-500 p-1 rounded-full text-white"
+                >
+                  <Edit2 />
+                </button>
+              </div>
               <h3 className="text-xl font-semibold mt-2 text-white">
                 Welcome{" "}
                 {userDetails.firstName

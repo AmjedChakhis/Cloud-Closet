@@ -1,13 +1,12 @@
 import { useLocation } from "react-router-dom";
 import { disablePageScroll, enablePageScroll } from "scroll-lock";
 import { Link } from "react-router-dom";
-import { logo } from "../assets";
-import { navigation } from "../constants";
-import Button from "./Button";
-import MenuSvg from "../assets/svg/MenuSvg";
-import { HamburgerMenu } from "./design/Header";
 import { useState } from "react";
 import { auth } from "./firebase";
+import { logo } from "../assets";
+import MenuSvg from "../assets/svg/MenuSvg";
+import Button from "./Button";
+
 const NavLog = () => {
   async function handleLogout() {
     try {
@@ -41,46 +40,37 @@ const NavLog = () => {
 
   return (
     <div
-      className={`fixed top-0 left-0 mt-5  w-full  z-50  border-b border-n-6 lg:bg-n-8/90 lg:backdrop-blur-sm ${
+      className={`fixed top-0 left-0 w-full z-50 border-b border-n-6 bg-n-8/90 backdrop-blur-sm ${
         openNavigation ? "bg-n-8" : "bg-n-8/90 backdrop-blur-sm"
       }`}
     >
-      <div className="flex items-center px-5 lg:px-7.5 xl:px-10 max-lg:py-4">
-        <Link className="block w-[15rem] mt-2 xl:mr-8" to="/">
+      <div className="flex items-center justify-between px-5 py-2 lg:px-10">
+        <Link className="block w-40" to="/">
           <img src={logo} alt="CloudCloset" />
         </Link>
 
         <nav
           className={`${
             openNavigation ? "flex" : "hidden"
-          } fixed top-[5rem] left-0 right-0 bottom-0 bg-n-8 lg:static lg:flex lg:mx-auto lg:bg-transparent`}
+          } fixed top-[3.5rem] left-0 right-0 bottom-0 bg-n-8 lg:static lg:flex lg:bg-transparent`}
         >
-          <div className="relative z-2 flex flex-col items-center justify-center m-auto lg:flex-row">
+          <div className="flex flex-col items-center justify-center lg:flex-row lg:space-x-4">
             <Link
               to="/edit-profile"
-              className="block relative font-code text-2xl uppercase text-n-1 transition-colors hover:text-color-1 px-6 py-6 md:py-8 lg:-mr-0.25 lg:text-xs lg:font-semibold  lg:leading-5 lg:hover:text-n-1 xl:px-12"
+              className="font-code text-2xl lg:text-base uppercase text-n-1 transition-colors hover:text-color-1 py-2 lg:py-0"
             >
               Edit Profile
             </Link>
             <Link
               to="/login"
               onClick={handleLogout}
-              className={`block relative font-code text-2xl uppercase text-n-1 transition-colors hover:text-color-1 
-                  lg:hidden
-                 px-6 py-6 md:py-8 lg:-mr-0.25 lg:text-xs lg:font-semibold  lg:leading-5 lg:hover:text-n-1 xl:px-12`}
+              className="font-code text-2xl lg:text-base uppercase text-n-1 transition-colors hover:text-color-1 py-2 lg:py-0"
             >
               Sign Out
             </Link>
           </div>
-
-          <HamburgerMenu />
         </nav>
 
-        <Link to="/login">
-          <Button className="hidden lg:flex mb-5" onClick={handleLogout}>
-            Sign out
-          </Button>
-        </Link>
         <Button
           className="ml-auto lg:hidden"
           px="px-3"
