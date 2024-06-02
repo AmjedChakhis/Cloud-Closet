@@ -216,7 +216,8 @@ export const pricing = [
   {
     id: "1",
     title: "Premium",
-    description: "The premium plan offers larger storage, priority support, advanced features and ad-free experience.",
+    description:
+      "The premium plan offers larger storage, priority support, advanced features and ad-free experience.",
     price: "9.99",
     features: [
       "Expanded storage: Generous capacity for larger file storage needs.",

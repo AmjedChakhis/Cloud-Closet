@@ -8,7 +8,9 @@ import "./index.css";
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <Router>
-      <App />
+      <div className="zoom-wrapper">
+        <App />
+      </div>
     </Router>
   </React.StrictMode>
 );

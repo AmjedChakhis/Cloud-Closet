@@ -1,0 +1,74 @@
+/* Add this CSS to your existing styles or create a new CSS file for responsiveness */
+
+.ContainerAll {
+    width: 100%;
+}
+
+.dashboard-grid {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 2%;
+    justify-content: space-between;
+    /* Adjust the top padding */
+}
+
+.container1 {
+    width: 30%;
+}
+
+.container2 {
+    width: 60%;
+    /* Each container takes 50% of the width initially */
+    max-width: 50%;
+    /* Maximum width of each container */
+}
+
+@media screen and (min-width: 768px) {
+    .container1 {
+        max-width: 30%;
+        /* Adjust container 1's maximum width for larger screens */
+    }
+
+    .container2 {
+        max-width: 70%;
+        /* Adjust container 2's maximum width for larger screens */
+    }
+}
+
+@media screen and (max-width: 767px) {
+
+    .container1,
+    .container2 {
+        flex-basis: 100%;
+        /* Both containers take full width on smaller screens */
+        max-width: 100%;
+    }
+}
+
+.folder-list {
+    width: 100%;
+    height: 100%;
+    /* Center folder-list vertically */
+}
+
+.user-welcome,
+.drag-drop {
+    margin-bottom: 10px;
+    /* Adjust the margin-bottom */
+}
+
+.user-welcome,
+.drag-drop {
+    width: 100%;
+}
+
+.folder-actions {
+    align-self: flex-start;
+}
+
+.Drag-add {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 3rem;
+}

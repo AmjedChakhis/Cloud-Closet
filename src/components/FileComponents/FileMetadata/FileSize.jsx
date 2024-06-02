@@ -1,4 +1,4 @@
-// components/FileSize.jsx
+// FileSize.jsx
 import React, { useEffect, useState } from "react";
 import { getStorage, ref, getMetadata } from "firebase/storage";
 
@@ -27,7 +27,12 @@ const FileSize = ({ filePath }) => {
     return `${(size / Math.pow(1024, i)).toFixed(2)} ${sizes[i]}`;
   };
 
-  return <span>{formatSize(fileSize)}</span>;
+  return (
+    <span className="flex items-center text-xs text-gray-500">
+      <span className="mr-1">📎</span>
+      {formatSize(fileSize)}
+    </span>
+  );
 };
 
 export default FileSize;

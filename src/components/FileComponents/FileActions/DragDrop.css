@@ -1,0 +1,36 @@
+/* DragAndDrop.css */
+
+.dropzone {
+    border: 2px dashed #007BFF;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 15rem;
+    /* Adjust the width */
+    height: 12rem;
+    /* Adjust the height */
+    margin-bottom: 20px;
+}
+
+.dropzone.active {
+    background-color: #f0f8ff;
+}
+
+.dropzone-content {
+    text-align: center;
+}
+
+.dropzone-content p {
+    margin-top: 10px;
+    color: #007BFF;
+}
+
+.progressBar {
+    margin-top: 10px;
+}
+
+.dropzone-content p.error {
+    color: red;
+}

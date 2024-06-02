@@ -1,0 +1,14 @@
+/* Add this CSS to your existing styles or create a new CSS file for the sidebar */
+
+.sidebar {
+    width: 100%;
+    /* Adjust the width of the sidebar */
+    background-color: #080112;
+    padding: 20px;
+    border-radius: 5%;
+}
+
+.sidebar .user-welcome,
+.sidebar .drag-drop {
+    margin-bottom: 20px;
+}

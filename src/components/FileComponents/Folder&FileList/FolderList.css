@@ -1,0 +1,36 @@
+/* FolderList.css */
+.folder-list-container {
+    padding: 16px;
+    background-color: #080112;
+    border-radius: 5%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    margin: 0 auto;
+}
+
+.folder-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.folder-list-item {
+    border-bottom: 1px solid #ddd;
+    padding: 8px 0;
+}
+
+.file-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.file-item-info {
+    display: flex;
+    align-items: center;
+}
+
+.file-item-actions {
+    display: flex;
+    gap: 8px;
+}

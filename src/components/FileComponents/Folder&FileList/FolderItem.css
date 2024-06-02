@@ -1,0 +1,39 @@
+/* FolderItem.css */
+.folder-item {
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid #ddd;
+    /* Fine grey line between items */
+    padding: 8px 0;
+}
+
+.folder-item-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.folder-item-info {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.folder-item-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.level-0 {
+    margin-left: 0;
+}
+
+.level-1 {
+    margin-left: 16px;
+}
+
+.level-2 {
+    margin-left: 32px;
+}
+
+/* Add more levels as needed */
