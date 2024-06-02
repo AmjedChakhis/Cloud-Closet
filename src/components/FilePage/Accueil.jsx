@@ -60,36 +60,38 @@ function Accueil() {
   return (
     <>
       <NavLog />
-      <div className="ContainerAll">
-        <div className="dashboard-grid">
-          <div className="container1">
-            <Sidebar
-              userDetails={userDetails}
-              userId={currentUser.uid}
-              handleRerender={handleRerender}
-            />
-          </div>
-          <div className="container2">
-            {currentUser && (
-              <>
-                <div className="folder-actions">
-                  <AddFolder
-                    Rerender={handleRerender}
-                    currentPath={currentUser.uid}
-                  />
-                  <FileUpload
-                    folderPath={currentUser.uid}
-                    onUpload={handleRerender}
-                  />
-                </div>
-                <div className="folder-list">
-                  <FolderList
-                    currentPath={currentUser.uid}
-                    Rerender={handleRerender}
-                  />
-                </div>
-              </>
-            )}
+      <div className="zoom-wrapper">
+        <div className="ContainerAll">
+          <div className="dashboard-grid">
+            <div className="container1">
+              <Sidebar
+                userDetails={userDetails}
+                userId={currentUser.uid}
+                handleRerender={handleRerender}
+              />
+            </div>
+            <div className="container2">
+              {currentUser && (
+                <>
+                  <div className="folder-actions">
+                    <AddFolder
+                      Rerender={handleRerender}
+                      currentPath={currentUser.uid}
+                    />
+                    <FileUpload
+                      folderPath={currentUser.uid}
+                      onUpload={handleRerender}
+                    />
+                  </div>
+                  <div className="folder-list">
+                    <FolderList
+                      currentPath={currentUser.uid}
+                      Rerender={handleRerender}
+                    />
+                  </div>
+                </>
+              )}
+            </div>
           </div>
         </div>
       </div>

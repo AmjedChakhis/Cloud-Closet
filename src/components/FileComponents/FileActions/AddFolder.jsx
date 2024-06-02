@@ -34,7 +34,10 @@ const AddFolder = ({ Rerender, currentPath }) => {
       return;
     }
 
-    const folderRef = ref(storage, `${currentPath}/${name}/placeholder.txt`);
+    const folderRef = ref(
+      storage,
+      `${currentPath}/${name}/folder_description.txt`
+    );
 
     try {
       await uploadString(folderRef, ""); // Upload an empty string as a placeholder file

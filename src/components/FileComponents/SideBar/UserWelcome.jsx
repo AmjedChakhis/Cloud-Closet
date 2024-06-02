@@ -15,11 +15,17 @@ const UserWelcome = ({ userDetails, userId, shouldRerender }) => {
       {userDetails ? (
         <>
           <div className="flex items-center mb-2">
-            <img
-              src={userDetails.profilePicture || "default-profile-picture-url"}
-              alt="Profile"
-              className="w-12 h-12 rounded-full mr-2"
-            />
+            {userDetails.profilePicture ? (
+              <img
+                src={userDetails.profilePicture}
+                className="w-24 h-24 rounded-full mb-2"
+              />
+            ) : (
+              <div className="w-15 h-15 rounded-full mb-2 flex items-center justify-center bg-indigo-500 text-white text-2xl">
+                {userDetails.firstName.charAt(0)}
+                {userDetails.lastName.charAt(0)}
+              </div>
+            )}
             <div>
               <div className="text-white text-center">
                 <p className="text-xl">Welcome,</p>
